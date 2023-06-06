@@ -18,7 +18,7 @@ class AuthController {
 
         val tokenResponse: HttpResponse<JsonNode> = Unirest.post("https://dev-c4l43o2ndcdikqar.us.auth0.com/oauth/token")
             .header("Content-Type", "application/json")
-            .body("{\"client_id\":\"vC01XXLywtCpGacKDL4Eh8mftU7FWXGo\",\"client_secret\":\"BmRroNocMjGOeae1EpqYXXoDqy4b6r5hcUndq9IgQQ3RDqEZUoPbzcPVm-GCEG-r\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+            .body("{\"client_id\":\"client_id\",\"client_secret\":\"client_secret\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
             .asJson()
         val accessToken = tokenResponse.body.getObject().getString("access_token")
         println("Access token  $accessToken ")
