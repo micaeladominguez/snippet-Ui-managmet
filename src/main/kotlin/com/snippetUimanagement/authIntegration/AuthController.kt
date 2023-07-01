@@ -1,25 +1,28 @@
 package com.snippetUimanagement.authIntegration
 
-import kong.unirest.GetRequest
+
+import io.github.cdimascio.dotenv.Dotenv
+import io.github.cdimascio.dotenv.dotenv
 import kong.unirest.HttpResponse
 import kong.unirest.JsonNode
 import kong.unirest.Unirest
-import kong.unirest.json.JSONObject
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+val dotenv: Dotenv = dotenv()
 
 @RestController
 @RequestMapping("/auth")
-class AuthController {
+class AuthController() {
     @GetMapping
     fun getAuth(): Any{
 
         val tokenResponse: HttpResponse<JsonNode> = Unirest.post("https://dev-c4l43o2ndcdikqar.us.auth0.com/oauth/token")
             .header("Content-Type", "application/json")
-            .body("{\"client_id\":\"client_id\",\"client_secret\":\"client_secret\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+            .body("{\"client_id\":\"${dotenv["AUTH_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
             .asJson()
+        println("TOKEN RESPONSE : " + tokenResponse.body.toString())
         val accessToken = tokenResponse.body.getObject().getString("access_token")
         println("Access token  $accessToken ")
         val apiResponse: HttpResponse<JsonNode>? =  Unirest.get("https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/users")
@@ -34,6 +37,5 @@ class AuthController {
         }else{
             "apI RESPONSE NULL"
         }
-
     }
 }
