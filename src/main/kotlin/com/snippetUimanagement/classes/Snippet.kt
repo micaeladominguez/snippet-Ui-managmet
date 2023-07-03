@@ -1,4 +1,4 @@
-package com.snippetUimanagement.entities
+package com.snippetUimanagement.classes
 
 data class Snippet(
     val snippetId: String,

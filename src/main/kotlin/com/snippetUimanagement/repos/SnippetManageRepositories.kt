@@ -1,7 +1,7 @@
 package com.snippetUimanagement.repos
 
-import com.snippetUimanagement.entities.Role
-import com.snippetUimanagement.entities.SnippetRole
+import com.snippetUimanagement.classes.Role
+import com.snippetUimanagement.classes.SnippetRole
 
 class SnippetManageRepositories {
     companion object {

@@ -1,6 +1,6 @@
 package com.snippetUimanagement.snippet.defineLintingRules
 
-import com.snippetUimanagement.entities.LintingRules
+import com.snippetUimanagement.classes.LintingRules
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class DefineLintingRules {

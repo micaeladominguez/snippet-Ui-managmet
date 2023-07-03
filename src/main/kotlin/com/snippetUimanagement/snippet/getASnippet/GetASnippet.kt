@@ -1,6 +1,6 @@
 package com.snippetUimanagement.snippet.getASnippet
 
-import com.snippetUimanagement.entities.Snippet
+import com.snippetUimanagement.classes.Snippet
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 

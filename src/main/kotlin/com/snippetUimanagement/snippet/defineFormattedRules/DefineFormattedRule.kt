@@ -1,6 +1,6 @@
 package com.snippetUimanagement.snippet.defineFormattedRules
 
-import com.snippetUimanagement.entities.FormatRules
+import com.snippetUimanagement.classes.FormatRules
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class DefineFormattedRule {

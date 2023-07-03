@@ -1,9 +1,9 @@
 package com.snippetUimanagement.repos
 
-import com.snippetUimanagement.entities.FormatRules
-import com.snippetUimanagement.entities.LintingRules
-import com.snippetUimanagement.entities.SnippetById
-import com.snippetUimanagement.entities.SnippetInterpreterResult
+import com.snippetUimanagement.classes.FormatRules
+import com.snippetUimanagement.classes.LintingRules
+import com.snippetUimanagement.classes.SnippetById
+import com.snippetUimanagement.classes.SnippetInterpreterResult
 
 class SnippetManagmentServiceSnippet {
     companion object {

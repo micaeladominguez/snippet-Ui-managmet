@@ -1,4 +1,4 @@
-package com.snippetUimanagement.entities
+package com.snippetUimanagement.classes
 
 
 enum class Role {
