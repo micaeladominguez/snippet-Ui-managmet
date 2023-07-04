@@ -1,8 +1,31 @@
 package com.snippetUimanagement.classes
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.deser.std.NumberDeserializers
+import java.util.UUID
+
 data class Snippet(
-    val snippetId: String,
-    val snippetCode: String,
-    val role: Role,
-    val staticCodeCorrect: Boolean
-)
+    val id: UUID,
+    val name: String,
+    val type: String,
+    val code: String
+){
+    constructor(): this(UUID.randomUUID(),"","","")
+}
+
+data class AnalyzeData(
+    @JsonDeserialize(using = NumberDeserializers.BooleanDeserializer::class)
+    val isValid: Boolean ,
+    val linesErrors: String
+){
+    constructor(): this(true, "")
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class AnalyzedSnippet(
+    val snippet: Snippet,
+    val data: AnalyzeData
+){
+    constructor(): this(Snippet(), AnalyzeData())
+}

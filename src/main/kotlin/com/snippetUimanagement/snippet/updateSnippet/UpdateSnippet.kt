@@ -1,14 +1,23 @@
 package com.snippetUimanagement.snippet.updateSnippet
 
+import com.snippetUimanagement.classes.Snippet
+import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
-import com.snippetUimanagement.repos.SnippetTestingScripts
+import java.util.UUID
 
 class UpdateSnippet {
-    fun updateSnippetCode(snippetUuid: String, snippetCode: String) {
-        //llama al snippet repo
-        SnippetManagmentServiceSnippet.updateSnippet(snippetUuid, snippetCode)
-        //llama al snippet test
-        SnippetTestingScripts.runTestsBySnippetUuid(snippetUuid)
+    companion object {
+        fun updateSnippetCode(snippetById: UUID, code: String, token:String) : Snippet?{
+            val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetById)
+            if(canUpdate){
+                return SnippetManagmentServiceSnippet.updateSnippet(snippetById, code, token)
+            }else{
+                return null
+            }
+            /*//TODO
+            SnippetTestingScripts.runTestsBySnippetUuid(snippetById)*/
+        }
     }
+
 
 }

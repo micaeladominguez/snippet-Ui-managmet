@@ -2,15 +2,18 @@ package com.snippetUimanagement.snippet.saveSnippet
 
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
+import com.snippetUimanagement.repos.dto.SnippetCreateDTO
 
 class SaveSnippet {
-
-    fun saveSnippet( snippetName: String, snippetType: String, snippetCode: String, snippetText: String, userUuid: String) {
-        //llama al snippet repo
-        val snippetUuid = SnippetManagmentServiceSnippet.sendSnippet(snippetName, snippetType, snippetCode, snippetText)
-        //llama al manage repo
-        val snippetRoleSaved = SnippetManageRepositories.saveSnippetByRole(snippetUuid, userUuid)
+    companion object {
+        fun saveSnippet(snippetCreateDTO: SnippetCreateDTO, token: String) {
+            //llama al snippet repo
+            val snippet = SnippetManagmentServiceSnippet.saveSnippet(snippetCreateDTO, token)
+            //llama al manage repo
+            val snippetRoleSaved = SnippetManageRepositories.saveSnippetByRole(snippet.id, token)
+        }
     }
+
 
 
 }
