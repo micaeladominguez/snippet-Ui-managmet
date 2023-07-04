@@ -9,7 +9,7 @@ class Interpreter {
         fun interpreter(token:String,snippetId: UUID): String?{
             val snippetRole = SnippetManageRepositories.canAccessASnippet(snippetId, token)
             if(snippetRole != null){
-                return SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token)
+                return SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token).joinToString("\n")
             }
             return null
         }

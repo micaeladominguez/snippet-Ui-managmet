@@ -32,8 +32,8 @@ class Requests {
            return postMethod(token, extraUrl, snippetRepository, requestBody)
         }
 
-        fun postTestRepositories(token : String, extraUrl: String,  requestBody: Any) {
-            postMethod(token, extraUrl, testRepository, requestBody)
+        fun postTestRepositories(token : String, extraUrl: String,  requestBody: Any): String? {
+            return postMethod(token, extraUrl, testRepository, requestBody)
         }
 
         fun putManageRepositories(token : String, extraUrl: String, requestBody: Any) : String?{
@@ -64,6 +64,7 @@ class Requests {
             headers.set("Authorization", token)
             val entity = HttpEntity(requestBody,headers)
             val restTemplate = RestTemplate()
+            println("URI " + "${uri}${extraUrl}")
             val response = restTemplate.postForEntity("${uri}${extraUrl}", entity, String::class.java)
             println("RESPONSE $response")
             return response.body

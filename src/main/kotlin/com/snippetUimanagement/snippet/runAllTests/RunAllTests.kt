@@ -1,11 +1,14 @@
 package com.snippetUimanagement.snippet.runAllTests
 
-import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import com.snippetUimanagement.repos.SnippetTestingScripts
+import com.snippetUimanagement.repos.dto.TestResultDto
+import java.util.UUID
 
 class RunAllTests {
-    fun runAllTests (snippetId: String ) {
-        val snippetResult = SnippetManagmentServiceSnippet.getResult(snippetId)
-        val snippetTests = SnippetTestingScripts.runTestsBySnippetUuid(snippetId, snippetResult.interpreterResult)
+    companion object {
+        fun runAllTests (token: String, snippetId: UUID ): List<TestResultDto> {
+            return SnippetTestingScripts.runTestsBySnippetUuid(token, snippetId).toList()
+        }
     }
+
 }

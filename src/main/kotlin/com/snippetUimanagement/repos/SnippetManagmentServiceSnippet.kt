@@ -7,7 +7,9 @@ import com.snippetUimanagement.repos.Requests.Companion.getSnippetRepositories
 import com.snippetUimanagement.repos.Requests.Companion.postSnippetRepositories
 import com.snippetUimanagement.repos.Requests.Companion.putSnippetRepositories
 import com.snippetUimanagement.repos.dto.SnippetCreateDTO
+import com.snippetUimanagement.repos.dto.UpdateRules
 import java.util.UUID
+import kotlin.collections.ArrayList
 
 class SnippetManagmentServiceSnippet {
     companion object {
@@ -48,9 +50,6 @@ class SnippetManagmentServiceSnippet {
             return snippetById[0]
         }
 
-        fun getResult(snippetUuid: String) : SnippetInterpreterResult {
-            return SnippetInterpreterResult("snippetId", "")
-        }
 
         fun getFormattedSnippet(snippetId: UUID, token: String) : Snippet {
             val response = putSnippetRepositories(token, "snippets/format/snippet?uuid=$snippetId","")
@@ -65,27 +64,55 @@ class SnippetManagmentServiceSnippet {
             return objectMapper.readValue(response, AnalyzeData::class.java)
         }
 
-        fun getRunnedSnippet(snippetId: UUID, token: String) : String? {
-            return putSnippetRepositories(token, "snippets/run?uuid=$snippetId","")
+        fun getRunnedSnippet(snippetId: UUID, token: String) : Array<String> {
+            val response = putSnippetRepositories(token, "snippets/run?uuid=$snippetId","")
+            val objectMapper = ObjectMapper()
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            return objectMapper.readValue(response, Array<String>::class.java)
+
         }
 
 
 
-        fun getAllFormatRules(userUuid: String): List<FormatRules> {
-            return mutableListOf()
+        fun getAllFormatRules(token: String): FormatInfoRule {
+            val response =  getSnippetRepositories(token, "/user/rules/formatted")
+            val objectMapper = ObjectMapper()
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            return objectMapper.readValue(response, FormatInfoRule::class.java)
         }
 
-        fun getAllLintingRules(userUuid: String): List<LintingRules> {
-            return mutableListOf()
+        fun getAllLintingRules(token: String): FormatInfoRule {
+            val response =  getSnippetRepositories(token, "/user/rules/linted")
+            val objectMapper = ObjectMapper()
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            return objectMapper.readValue(response, FormatInfoRule::class.java)
         }
 
 
-        fun updateFormatRules(userUuid: String, formatRules: List<FormatRules>): List<FormatRules> {
-            return mutableListOf()
+        fun updateFormatRules(token: String, updateRules: UpdateRules): FormatInfoRule {
+            val response =  putSnippetRepositories(token, "/user/rules/formatted", updateRules)
+            return castRules(response)
         }
 
-        fun updateLintingRules(userUuid: String, lintingRules: List<LintingRules>): List<LintingRules> {
-            return mutableListOf()
+        fun updateLintingRules(token: String, updateRules: UpdateRules): FormatInfoRule {
+            val response =  putSnippetRepositories(token, "/user/rules/linted", updateRules)
+            return castRules(response)
+        }
+
+
+        private fun castRules(response: String?): FormatInfoRule {
+            val objectMapper = ObjectMapper()
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            val userRules : Array<UserRule>  = objectMapper.readValue(response,  Array<UserRule>::class.java)
+            if(userRules.isNotEmpty()){
+                val userId = userRules[0].userId
+                val rulesValued = ArrayList<RuleValued>()
+                for(rule in userRules){
+                    rulesValued.add(RuleValued(rule.rule.id, rule.rule.name, rule.value))
+                }
+                return FormatInfoRule(userId, rulesValued)
+            }
+            return FormatInfoRule()
         }
     }
 
