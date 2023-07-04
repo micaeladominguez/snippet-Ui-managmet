@@ -1,5 +1,7 @@
 package com.snippetUimanagement.repos
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -8,9 +10,9 @@ import org.springframework.web.client.RestTemplate
 
 class Requests {
     companion object {
-        private const val manageRepository = "https://snippetsps-dev.ddns.net/manage-repositories"
-        private const val snippetRepository = "https://snippetsps-dev.ddns.net/management-service"
-        private const val testRepository = "https://snippetsps-dev.ddns.net/testing-scripts"
+        private const val manageRepository = "https://snippetsps-dev.ddns.net/services/manage-repositories"
+        private const val snippetRepository = "https://snippetsps-dev.ddns.net/services/management-service"
+        private const val testRepository = "https://snippetsps-dev.ddns.net/services/testing-scripts"
 
         fun getManageRepositories(token : String, extraUrl: String) : String?{
             return getMethod(token, extraUrl, manageRepository)
@@ -33,7 +35,9 @@ class Requests {
         }
 
         fun postTestRepositories(token : String, extraUrl: String,  requestBody: Any): String? {
-            return postMethod(token, extraUrl, testRepository, requestBody)
+            val objectMapper = ObjectMapper().registerModule(KotlinModule())
+            val requestBodyJson = objectMapper.writeValueAsString(requestBody)
+            return postMethod(token, extraUrl, testRepository, requestBodyJson)
         }
 
         fun putManageRepositories(token : String, extraUrl: String, requestBody: Any) : String?{
@@ -63,6 +67,7 @@ class Requests {
             val headers = HttpHeaders()
             headers.set("Authorization", token)
             val entity = HttpEntity(requestBody,headers)
+            println("ENTITY $entity")
             val restTemplate = RestTemplate()
             println("URI " + "${uri}${extraUrl}")
             val response = restTemplate.postForEntity("${uri}${extraUrl}", entity, String::class.java)
