@@ -20,13 +20,14 @@ class SnippetManagmentServiceSnippet {
         }
 
         fun updateSnippet(snippetId: UUID, code: String, token: String): Snippet {
-            val response = putSnippetRepositories(token, "snippets/update/snippet?uuid=$snippetId",code)
+            val response = putSnippetRepositories(token, "/snippets/update/snippet?uuid=$snippetId",code)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
         fun getAllThisSnippets(token: String, snippetsId: List<UUID>) : List<SnippetById> {
             val snippetsUuids = snippetsId.joinToString(",")
+            println("UUIDS " + snippetsUuids)
             val response = getSnippetRepositories(token, "/snippets?uuids=$snippetsUuids")
             val mapper = ObjectMapper()
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -52,20 +53,20 @@ class SnippetManagmentServiceSnippet {
 
 
         fun getFormattedSnippet(snippetId: UUID, token: String) : Snippet {
-            val response = putSnippetRepositories(token, "snippets/format/snippet?uuid=$snippetId","")
+            val response = putSnippetRepositories(token, "/snippets/format/snippet?uuid=$snippetId","")
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
         fun getLintedSnippet(snippetId: UUID, token: String) : AnalyzeData {
-            val response = putSnippetRepositories(token, "snippets/validate?uuid=$snippetId","")
+            val response = putSnippetRepositories(token, "/snippets/validate?uuid=$snippetId","")
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, AnalyzeData::class.java)
         }
 
         fun getRunnedSnippet(snippetId: UUID, token: String) : Array<String> {
-            val response = putSnippetRepositories(token, "snippets/run?uuid=$snippetId","")
+            val response = putSnippetRepositories(token, "/snippets/run?uuid=$snippetId","")
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, Array<String>::class.java)

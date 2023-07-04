@@ -8,9 +8,9 @@ import org.springframework.web.client.RestTemplate
 
 class Requests {
     companion object {
-        private const val manageRepository = "http://localhost:8082/"
-        private const val snippetRepository = "http://localhost:8080/"
-        private const val testRepository = "http://localhost:8080/"
+        private const val manageRepository = "https://snippetsps-dev.ddns.net/manage-repositories"
+        private const val snippetRepository = "https://snippetsps-dev.ddns.net/management-service"
+        private const val testRepository = "https://snippetsps-dev.ddns.net/testing-scripts"
 
         fun getManageRepositories(token : String, extraUrl: String) : String?{
             return getMethod(token, extraUrl, manageRepository)
@@ -41,7 +41,6 @@ class Requests {
         }
 
         fun putSnippetRepositories(token : String, extraUrl: String, requestBody: Any) : String?{
-            println(requestBody)
             return putMethod(token, extraUrl, snippetRepository, requestBody)
         }
 
@@ -54,6 +53,7 @@ class Requests {
             headers.set("Authorization", token)
             val entity = HttpEntity<String>(headers)
             val restTemplate = RestTemplate()
+            println("${uri}${extraUrl}")
             val response = restTemplate.exchange("${uri}${extraUrl}", HttpMethod.GET, entity, String::class.java)
             println("RESPONSE ${response.body}")
             return response.body
@@ -75,6 +75,7 @@ class Requests {
             headers.set("Authorization", token)
             val entity = HttpEntity(requestBody,headers)
             val restTemplate = RestTemplate()
+            println("${uri}${extraUrl}")
             val response = restTemplate.exchange("${uri}${extraUrl}", HttpMethod.PUT, entity, String::class.java)
             println("RESPONSE $response")
             return response.body

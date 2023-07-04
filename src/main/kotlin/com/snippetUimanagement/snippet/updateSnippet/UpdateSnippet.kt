@@ -1,6 +1,5 @@
 package com.snippetUimanagement.snippet.updateSnippet
 
-import com.snippetUimanagement.classes.Snippet
 import com.snippetUimanagement.classes.SnippetUpdateWithTests
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
@@ -13,13 +12,15 @@ class UpdateSnippet {
             val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId)
             if(canUpdate){
                 val snippet = SnippetManagmentServiceSnippet.updateSnippet(snippetId, code, token)
-                var interpretatedSnippet = SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token)
+                val interpretedSnippet = SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token)
+                println("llegue aca")
                 var result = ""
-                if(interpretatedSnippet.isNotEmpty() && interpretatedSnippet[0] == "No messages")
+                if(interpretedSnippet.isNotEmpty() && interpretedSnippet[0] == "No messages")
                     result = ""
                 else
-                    result = interpretatedSnippet.joinToString("\n")
+                    result = interpretedSnippet.joinToString("\n")
                 val testResults = SnippetTestingScripts.runTestsBySnippetUuid(token,snippetId, result)
+                println("llegue aca")
                 return SnippetUpdateWithTests(snippet, testResults.toList())
             }else{
                 return null
