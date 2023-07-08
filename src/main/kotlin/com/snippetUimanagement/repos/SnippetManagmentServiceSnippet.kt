@@ -8,6 +8,7 @@ import com.snippetUimanagement.repos.Requests.Companion.postSnippetRepositories
 import com.snippetUimanagement.repos.Requests.Companion.putSnippetRepositories
 import com.snippetUimanagement.repos.dto.SnippetCreateDTO
 import com.snippetUimanagement.repos.dto.UpdateRules
+import com.snippetUimanagement.repos.dto.UpdateRulesAndSnippets
 import java.util.UUID
 import kotlin.collections.ArrayList
 
@@ -95,7 +96,7 @@ class SnippetManagmentServiceSnippet {
             return castRules(response)
         }
 
-        fun updateLintingRules(token: String, updateRules: UpdateRules): FormatInfoRule {
+        fun updateLintingRules(token: String, updateRules: UpdateRulesAndSnippets): FormatInfoRule {
             val response =  putSnippetRepositories(token, "/user/rules/linted", updateRules)
             return castRules(response)
         }
