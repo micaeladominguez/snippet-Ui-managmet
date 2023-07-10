@@ -13,14 +13,12 @@ class UpdateSnippet {
             if(canUpdate){
                 val snippet = SnippetManagmentServiceSnippet.updateSnippet(snippetId, code, token)
                 val interpretedSnippet = SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token)
-                println("llegue aca")
                 var result = ""
                 if(interpretedSnippet.isNotEmpty() && interpretedSnippet[0] == "No messages")
                     result = ""
                 else
                     result = interpretedSnippet.joinToString("\n")
                 val testResults = SnippetTestingScripts.runTestsBySnippetUuid(token,snippetId, result)
-                println("llegue aca")
                 return SnippetUpdateWithTests(snippet, testResults.toList())
             }else{
                 return null

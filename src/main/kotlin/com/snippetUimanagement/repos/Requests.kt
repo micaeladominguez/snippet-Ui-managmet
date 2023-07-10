@@ -10,9 +10,10 @@ import org.springframework.web.client.RestTemplate
 
 class Requests {
     companion object {
-        private const val manageRepository = "https://snippetsps-dev.ddns.net/services/manage-repositories"
-        private const val snippetRepository = "https://snippetsps-dev.ddns.net/services/management-service"
-        private const val testRepository = "https://snippetsps-dev.ddns.net/services/testing-scripts"
+        private const val manageRepository = "https://snippetsps.ddns.net/services/manage-repositories"
+        private const val snippetRepository = "https://snippetsps.ddns.net/services/management-service"
+        private const val testRepository = "https://snippetsps.ddns.net/services/testing-scripts"
+
 
         fun getManageRepositories(token : String, extraUrl: String) : String?{
             return getMethod(token, extraUrl, manageRepository)

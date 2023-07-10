@@ -9,9 +9,10 @@ data class Snippet(
     val id: UUID,
     val name: String,
     val type: String,
-    val code: String
+    val code: String,
+    val linesFailed: String
 ){
-    constructor(): this(UUID.randomUUID(),"","","")
+    constructor(): this(UUID.randomUUID(),"","","", "")
 }
 
 data class AnalyzeData(
