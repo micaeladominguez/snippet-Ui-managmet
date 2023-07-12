@@ -31,9 +31,9 @@ import java.util.*
 class ApiController {
 
     private fun cutUrlBeforeBackend(url: String): String {
-        val uri = URI(url)
-        val cutPath = uri.path.substringBefore("/backend")
-        return uri.scheme + "://" + uri.host + cutPath + "/"
+        val validDomains = listOf("https://snippetsps-dev.ddns.net/", "https://snippetsps.ddns.net/")
+        val matchingDomain = validDomains.find { url.startsWith(it) }
+        return matchingDomain ?: "https://snippetsps-dev.ddns.net/"
     }
     @PostMapping("/snippets/create")
     fun postASnippet(@RequestHeader authorization : String, @RequestBody body : SnippetCreateDTO, request: HttpServletRequest): ResponseEntity<String> {

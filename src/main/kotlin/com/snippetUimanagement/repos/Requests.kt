@@ -68,7 +68,7 @@ class Requests {
             println("ENTITY $entity")
             val restTemplate = RestTemplate()
             println("URI " + "${url}${uri}${extraUrl}")
-            val response = restTemplate.postForEntity("${uri}${extraUrl}", entity, String::class.java)
+            val response = restTemplate.postForEntity("${url}${uri}${extraUrl}", entity, String::class.java)
             println("RESPONSE $response")
             return response.body
         }
@@ -79,7 +79,7 @@ class Requests {
             val entity = HttpEntity(requestBody,headers)
             val restTemplate = RestTemplate()
             println("${url}${uri}${extraUrl}")
-            val response = restTemplate.exchange("${uri}${extraUrl}", HttpMethod.PUT, entity, String::class.java)
+            val response = restTemplate.exchange("${url}${uri}${extraUrl}", HttpMethod.PUT, entity, String::class.java)
             println("RESPONSE $response")
             return response.body
         }
