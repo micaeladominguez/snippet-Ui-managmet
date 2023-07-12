@@ -2,14 +2,11 @@ package com.snippetUimanagement.api
 
 import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.classes.User
+import com.snippetUimanagement.repos.dto.*
 import com.snippetUimanagement.snippet.addTest.AddTest.Companion.addTest
-import com.snippetUimanagement.repos.dto.CreateTestCaseDto
 import com.snippetUimanagement.snippet.saveSnippet.SaveSnippet.Companion.saveSnippet
 import com.snippetUimanagement.snippet.getAllSnippets.GetAllSnippets.Companion.getAllSnippets
 
-import com.snippetUimanagement.repos.dto.SnippetCreateDTO
-import com.snippetUimanagement.repos.dto.SnippetRoleUpdateDTO
-import com.snippetUimanagement.repos.dto.UpdateRules
 import com.snippetUimanagement.snippet.defineFormattedRules.DefineFormattedRule.Companion.formatRules
 import com.snippetUimanagement.snippet.defineLintingRules.DefineLintingRules.Companion.lintingRules
 import com.snippetUimanagement.snippet.format.Format.Companion.format
@@ -117,7 +114,7 @@ class ApiController {
     }
 
     @PutMapping("/update")
-    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : String, request: HttpServletRequest): ResponseEntity<out Any> {
+    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : UpdateSnippetDTO, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = updateSnippetCode(snippetId, code, authorization, url)

@@ -9,6 +9,7 @@ import com.snippetUimanagement.repos.Requests.Companion.putSnippetRepositories
 import com.snippetUimanagement.repos.dto.SnippetCreateDTO
 import com.snippetUimanagement.repos.dto.UpdateRules
 import com.snippetUimanagement.repos.dto.UpdateRulesAndSnippets
+import com.snippetUimanagement.repos.dto.UpdateSnippetDTO
 import java.util.UUID
 import kotlin.collections.ArrayList
 
@@ -20,7 +21,7 @@ class SnippetManagmentServiceSnippet {
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
-        fun updateSnippet(snippetId: UUID, code: String, token: String, url: String): Snippet {
+        fun updateSnippet(snippetId: UUID, code: UpdateSnippetDTO, token: String, url: String): Snippet {
             val response = putSnippetRepositories(token, "/snippets/update/snippet?uuid=$snippetId",code, url)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
