@@ -52,7 +52,7 @@ class ApiController {
         }
     }
 
-    @PatchMapping("/test/create")
+    @PutMapping("/test/create")
     fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto, request: HttpServletRequest): ResponseEntity<Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
