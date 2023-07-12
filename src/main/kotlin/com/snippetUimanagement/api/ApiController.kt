@@ -38,7 +38,7 @@ class ApiController {
     private fun cutUrlBeforeBackend(url: String): String {
         val validDomains = listOf("snippetsps-dev.ddns.net", "snippetsps.ddns.net")
         val matchingDomain = validDomains.find { url.contains(it) }
-
+        println("MATCHING DOMAIN $matchingDomain")
         return matchingDomain?.let { "https://$it/" } ?: "https://snippetsps-dev.ddns.net/"
     }
 
@@ -217,8 +217,9 @@ class ApiController {
     fun getAuth(request: HttpServletRequest): ResponseEntity<out Any> {
         val tokenResponse: HttpResponse<JsonNode> = Unirest.post("https://dev-c4l43o2ndcdikqar.us.auth0.com/oauth/token")
             .header("Content-Type", "application/json")
-            .body("{\"client_id\":\"${dotenv["AUTH0_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH0_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+            .body("{\"client_id\":\"${dotenv["AUTH_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
             .asJson()
+        println("token response ${tokenResponse.body}")
         val accessToken = tokenResponse.body.getObject().getString("access_token")
         val apiResponse: HttpResponse<JsonNode>? =  Unirest.get("https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/users")
             .header("Authorization", "Bearer $accessToken").asJson()
