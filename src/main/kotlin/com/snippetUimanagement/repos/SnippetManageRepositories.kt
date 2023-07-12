@@ -13,12 +13,12 @@ import java.util.UUID
 
 class SnippetManageRepositories {
     companion object {
-        fun saveSnippetByRole(snippetUuid: UUID, token: String): String? {
-            return postManageRepositories(token,"/authorization", SnippetRoleCreationDTO(snippetUuid))
+        fun saveSnippetByRole(snippetUuid: UUID, token: String, url: String): String? {
+            return postManageRepositories(token,"/authorization", SnippetRoleCreationDTO(snippetUuid),url)
         }
 
-        fun getSnippetsThatCanSee(token: String) : List<SnippetRole>{
-            val response =  getManageRepositories(token, "/authorization/all")
+        fun getSnippetsThatCanSee(token: String, url: String) : List<SnippetRole>{
+            val response =  getManageRepositories(token, "/authorization/all", url)
             val mapper = ObjectMapper()
             val snippetRole: Array<SnippetInfo> = mapper.readValue(response, Array<SnippetInfo>::class.java)
             val snippets = mutableListOf<SnippetRole>()
@@ -36,22 +36,22 @@ class SnippetManageRepositories {
             }
         }
 
-        fun canAccessASnippet(snippetId: UUID, token: String): SnippetRole? {
-            val response = getManageRepositories(token, "/authorization/access?snippetId=$snippetId") ?: return null
+        fun canAccessASnippet(snippetId: UUID, token: String, url: String): SnippetRole? {
+            val response = getManageRepositories(token, "/authorization/access?snippetId=$snippetId", url) ?: return null
             val mapper = ObjectMapper()
             val snippetRole: SnippetInfo = mapper.readValue(response, SnippetInfo::class.java)
             return SnippetRole(snippetRole.snippetUuid, getRoleByName(snippetRole.role.name))
         }
 
-        fun givePermissions(snippetRoleUpdateDTO: SnippetRoleUpdateDTO, token: String): SnippetRole {
+        fun givePermissions(snippetRoleUpdateDTO: SnippetRoleUpdateDTO, token: String, url: String): SnippetRole {
             val mapper = ObjectMapper()
-            val response =  putManageRepositories(token, "/authorization", snippetRoleUpdateDTO)
+            val response =  putManageRepositories(token, "/authorization", snippetRoleUpdateDTO, url)
             val snippetRole: SnippetInfo = mapper.readValue(response, SnippetInfo::class.java)
             return SnippetRole(snippetRole.snippetUuid, getRoleByName(snippetRole.role.name))
         }
 
-        fun checkIfICanUpdate(token: String, snippetId: UUID): Boolean {
-            val response = getManageRepositories(token, "/authorization/update?snippetId=$snippetId")
+        fun checkIfICanUpdate(token: String, snippetId: UUID, url: String): Boolean {
+            val response = getManageRepositories(token, "/authorization/update?snippetId=$snippetId", url)
             return response == "true"
         }
     }

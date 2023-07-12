@@ -19,19 +19,27 @@ import com.snippetUimanagement.snippet.linter.Linter.Companion.lint
 import com.snippetUimanagement.snippet.runAllTests.RunAllTests.Companion.runAllTests
 import com.snippetUimanagement.snippet.shareASnippet.ShareASnippet.Companion.shareASnippet
 import com.snippetUimanagement.snippet.updateSnippet.UpdateSnippet.Companion.updateSnippetCode
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.ResponseEntity
+import java.net.URI
 import java.util.*
 
 @RestController
 @RequestMapping("/api")
 class ApiController {
 
+    private fun cutUrlBeforeBackend(url: String): String {
+        val uri = URI(url)
+        val cutPath = uri.path.substringBefore("/backend")
+        return uri.scheme + "://" + uri.host + cutPath + "/"
+    }
     @PostMapping("/snippets/create")
-    fun postASnippet(@RequestHeader authorization : String, @RequestBody body : SnippetCreateDTO): ResponseEntity<String> {
+    fun postASnippet(@RequestHeader authorization : String, @RequestBody body : SnippetCreateDTO, request: HttpServletRequest): ResponseEntity<String> {
         return try {
-            saveSnippet(body, authorization)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            saveSnippet(body, authorization, url)
             ResponseEntity("Created ", HttpStatus.CREATED)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -40,9 +48,10 @@ class ApiController {
     }
 
     @PostMapping("/test/create")
-    fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto): ResponseEntity<Any> {
+    fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto, request: HttpServletRequest): ResponseEntity<Any> {
         return try {
-            val response = addTest(authorization, snippetId, body)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = addTest(authorization, snippetId, body, url)
             ResponseEntity(response, HttpStatus.CREATED)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -51,9 +60,10 @@ class ApiController {
     }
 
     @GetMapping("/snippets/runAllTests")
-    fun getAllSnippetsGet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun getAllSnippetsGet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = runAllTests(authorization, snippetId)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -62,9 +72,10 @@ class ApiController {
     }
 
     @PutMapping("/test/update")
-    fun updateTestPut(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun updateTestPut(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = runAllTests(authorization, snippetId)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -73,9 +84,10 @@ class ApiController {
     }
 
     @GetMapping("/snippets")
-    fun getAllSnippetsGet(@RequestHeader authorization : String): ResponseEntity<out Any> {
+    fun getAllSnippetsGet(@RequestHeader authorization : String, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = getAllSnippets(authorization)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = getAllSnippets(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -85,9 +97,10 @@ class ApiController {
 
 
     @PutMapping("/share")
-    fun shareASnippetPut(@RequestHeader authorization : String,  @RequestBody body : SnippetRoleUpdateDTO): ResponseEntity<out Any> {
+    fun shareASnippetPut(@RequestHeader authorization : String,  @RequestBody body : SnippetRoleUpdateDTO, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = shareASnippet(authorization, body)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = shareASnippet(authorization, body, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -95,9 +108,10 @@ class ApiController {
     }
 
     @PutMapping("/update")
-    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : String): ResponseEntity<out Any> {
+    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : String, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = updateSnippetCode(snippetId, code, authorization)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = updateSnippetCode(snippetId, code, authorization, url)
                 ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
@@ -106,9 +120,10 @@ class ApiController {
     }
 
     @PutMapping("/format")
-    fun formatASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun formatASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = format(authorization,snippetId) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = format(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -116,9 +131,10 @@ class ApiController {
     }
 
     @PutMapping("/interpreter")
-    fun runASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun runASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = interpreter(authorization,snippetId) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = interpreter(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -126,9 +142,10 @@ class ApiController {
     }
 
     @PutMapping("/lint")
-    fun lintASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun lintASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = lint(authorization,snippetId) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = lint(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -136,9 +153,10 @@ class ApiController {
     }
 
     @GetMapping("/snippet")
-    fun getASnippetGet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+    fun getASnippetGet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = getASnippet(authorization,snippetId) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = getASnippet(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -146,9 +164,10 @@ class ApiController {
     }
 
     @GetMapping("/rules/formatting")
-    fun getFormattedRulesGet(@RequestHeader authorization : String): ResponseEntity<out Any> {
+    fun getFormattedRulesGet(@RequestHeader authorization : String, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = getFormattedRules(authorization)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = getFormattedRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -156,9 +175,10 @@ class ApiController {
     }
 
     @GetMapping("/rules/linting")
-    fun getLintingRulesGet(@RequestHeader authorization : String): ResponseEntity<out Any> {
+    fun getLintingRulesGet(@RequestHeader authorization : String, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = getLintingRules(authorization)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = getLintingRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -166,9 +186,10 @@ class ApiController {
     }
 
     @PutMapping("/rules/formatting")
-    fun updateFormattedRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules): ResponseEntity<out Any> {
+    fun updateFormattedRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = formatRules(authorization, rules)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = formatRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
@@ -176,9 +197,10 @@ class ApiController {
     }
 
     @PutMapping("/rules/linting")
-    fun updateLintingRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules): ResponseEntity<out Any> {
+    fun updateLintingRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
-            val response = lintingRules(authorization, rules)
+            val url = cutUrlBeforeBackend(request.requestURL.toString())
+            val response = lintingRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)

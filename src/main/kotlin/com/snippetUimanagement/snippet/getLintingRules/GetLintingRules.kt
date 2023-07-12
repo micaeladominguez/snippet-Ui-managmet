@@ -4,9 +4,9 @@ import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class GetLintingRules {
     companion object {
-        fun getLintingRules(userUuid: String): Any {
+        fun getLintingRules(userUuid: String, url: String): Any {
             return try {
-                SnippetManagmentServiceSnippet.getAllLintingRules(userUuid)
+                SnippetManagmentServiceSnippet.getAllLintingRules(userUuid, url)
 
             }catch(e: Throwable){
                 e

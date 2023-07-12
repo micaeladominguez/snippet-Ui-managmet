@@ -5,9 +5,9 @@ import com.snippetUimanagement.repos.dto.UpdateRules
 
 class DefineFormattedRule {
     companion object {
-        fun formatRules(token: String, updatedRules : UpdateRules) : Any{
+        fun formatRules(token: String, updatedRules : UpdateRules, url: String) : Any{
             return try {
-                SnippetManagmentServiceSnippet.updateFormatRules(token, updatedRules)
+                SnippetManagmentServiceSnippet.updateFormatRules(token, updatedRules, url)
             }catch(e: Throwable){
                 e
             }

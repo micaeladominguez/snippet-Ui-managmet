@@ -6,9 +6,9 @@ import java.util.UUID
 
 class AddTest {
     companion object {
-        fun addTest(token: String, snippetId: UUID, createTestDTO: CreateTestCaseDto): Any {
+        fun addTest(token: String, snippetId: UUID, createTestDTO: CreateTestCaseDto, url: String): Any {
             return try {
-                SnippetTestingScripts.addTest(token, snippetId, createTestDTO)
+                SnippetTestingScripts.addTest(token, snippetId, createTestDTO, url)
             }catch(e: Throwable){
                 e
             }

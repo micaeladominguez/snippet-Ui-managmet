@@ -6,11 +6,11 @@ import java.util.*
 
 class Linter {
     companion object {
-        fun lint(token:String,snippetId: UUID): Any?{
+        fun lint(token:String,snippetId: UUID, url: String): Any?{
             try {
-                val snippetRole = SnippetManageRepositories.canAccessASnippet(snippetId, token)
+                val snippetRole = SnippetManageRepositories.canAccessASnippet(snippetId, token, url)
                 if(snippetRole != null){
-                    return SnippetManagmentServiceSnippet.getLintedSnippet(snippetId, token)
+                    return SnippetManagmentServiceSnippet.getLintedSnippet(snippetId, token, url)
                 }
                 return null
             }catch (e: Throwable){

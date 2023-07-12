@@ -8,12 +8,12 @@ import java.util.UUID
 
 class UpdateSnippet {
     companion object {
-        fun updateSnippetCode(snippetId: UUID, code: String, token:String) : Any?{
+        fun updateSnippetCode(snippetId: UUID, code: String, token:String, url: String) : Any?{
             try {
-                val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId)
+                val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId, url)
                 return if(canUpdate){
-                    val snippet = SnippetManagmentServiceSnippet.updateSnippet(snippetId, code, token)
-                    val interpretedSnippet = SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token)
+                    val snippet = SnippetManagmentServiceSnippet.updateSnippet(snippetId, code, token, url)
+                    val interpretedSnippet = SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token, url)
                     val result = if(interpretedSnippet.isNotEmpty() && interpretedSnippet[0] == "No messages")
                         ""
                     else

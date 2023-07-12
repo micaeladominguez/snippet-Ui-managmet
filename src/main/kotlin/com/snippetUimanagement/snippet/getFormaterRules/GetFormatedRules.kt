@@ -4,9 +4,9 @@ import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class GetFormattedRules {
     companion object {
-        fun getFormattedRules(token: String)  : Any {
+        fun getFormattedRules(token: String, url: String)  : Any {
             return try {
-                SnippetManagmentServiceSnippet.getAllFormatRules(token)
+                SnippetManagmentServiceSnippet.getAllFormatRules(token, url)
             }catch (e: Throwable){
                 e
             }

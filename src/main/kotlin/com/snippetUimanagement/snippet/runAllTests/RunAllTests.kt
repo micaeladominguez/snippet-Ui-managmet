@@ -5,9 +5,9 @@ import java.util.UUID
 
 class RunAllTests {
     companion object {
-        fun runAllTests (token: String, snippetId: UUID ): Any {
+        fun runAllTests (token: String, snippetId: UUID, url: String ): Any {
             return try {
-                 SnippetTestingScripts.runTestsBySnippetUuid(token, snippetId).toList()
+                 SnippetTestingScripts.runTestsBySnippetUuid(token, snippetId, url).toList()
             }catch (e: Throwable){
                 e
             }

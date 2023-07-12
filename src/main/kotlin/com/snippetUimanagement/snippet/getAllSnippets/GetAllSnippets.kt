@@ -6,11 +6,11 @@ import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class GetAllSnippets {
     companion object {
-        fun getAllSnippets(token: String): Any{
+        fun getAllSnippets(token: String, url: String): Any{
             return try {
-                val snippetsWithRole = SnippetManageRepositories.getSnippetsThatCanSee(token)
+                val snippetsWithRole = SnippetManageRepositories.getSnippetsThatCanSee(token, url)
                 val snippetIds = snippetsWithRole.map { it.id }
-                val snippetsByIds = SnippetManagmentServiceSnippet.getAllThisSnippets(token,snippetIds)
+                val snippetsByIds = SnippetManagmentServiceSnippet.getAllThisSnippets(token,snippetIds, url)
                 snippetsByIds.mapNotNull { snippetById ->
                     val snippetRole = snippetsWithRole.firstOrNull { it.id == snippetById.id }
                     snippetRole?.let { CompleteSnippet(snippetById.id, snippetById.code, it.role, snippetById.staticCodeCorrect, snippetById.linesErrors) }

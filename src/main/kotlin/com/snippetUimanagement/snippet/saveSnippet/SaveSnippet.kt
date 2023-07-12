@@ -6,10 +6,10 @@ import com.snippetUimanagement.repos.dto.SnippetCreateDTO
 
 class SaveSnippet {
     companion object {
-        fun saveSnippet(snippetCreateDTO: SnippetCreateDTO, token: String): Any {
+        fun saveSnippet(snippetCreateDTO: SnippetCreateDTO, token: String, url: String): Any {
             return try {
-                val snippet = SnippetManagmentServiceSnippet.saveSnippet(snippetCreateDTO, token)
-                SnippetManageRepositories.saveSnippetByRole(snippet.id, token)
+                val snippet = SnippetManagmentServiceSnippet.saveSnippet(snippetCreateDTO, token, url)
+                SnippetManageRepositories.saveSnippetByRole(snippet.id, token, url)
                 snippet
             }catch(e: Throwable){
                 e

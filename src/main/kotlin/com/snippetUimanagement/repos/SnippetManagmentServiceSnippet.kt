@@ -14,22 +14,22 @@ import kotlin.collections.ArrayList
 
 class SnippetManagmentServiceSnippet {
     companion object {
-        fun saveSnippet(snippetCreateDTO: SnippetCreateDTO, token: String): Snippet {
-            val response = postSnippetRepositories(token, "/snippets/create", snippetCreateDTO)
+        fun saveSnippet(snippetCreateDTO: SnippetCreateDTO, token: String, url: String): Snippet {
+            val response = postSnippetRepositories(token, "/snippets/create", snippetCreateDTO, url)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
-        fun updateSnippet(snippetId: UUID, code: String, token: String): Snippet {
-            val response = putSnippetRepositories(token, "/snippets/update/snippet?uuid=$snippetId",code)
+        fun updateSnippet(snippetId: UUID, code: String, token: String, url: String): Snippet {
+            val response = putSnippetRepositories(token, "/snippets/update/snippet?uuid=$snippetId",code, url)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
-        fun getAllThisSnippets(token: String, snippetsId: List<UUID>) : List<SnippetById> {
+        fun getAllThisSnippets(token: String, snippetsId: List<UUID>, url: String) : List<SnippetById> {
             val snippetsUuids = snippetsId.joinToString(",")
             println("UUIDS " + snippetsUuids)
-            val response = getSnippetRepositories(token, "/snippets?uuids=$snippetsUuids")
+            val response = getSnippetRepositories(token, "/snippets?uuids=$snippetsUuids", url)
             val mapper = ObjectMapper()
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             val snippetRole: Array<AnalyzedSnippet> = mapper.readValue(response, Array<AnalyzedSnippet>::class.java)
@@ -40,8 +40,8 @@ class SnippetManagmentServiceSnippet {
             return snippetById
         }
 
-        fun getSnippet(snippetId: UUID, token: String): SnippetById {
-            val response = getSnippetRepositories(token, "/snippets?uuids=$snippetId")
+        fun getSnippet(snippetId: UUID, token: String, url: String): SnippetById {
+            val response = getSnippetRepositories(token, "/snippets?uuids=$snippetId", url)
             val mapper = ObjectMapper()
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             val snippetRole: Array<AnalyzedSnippet> = mapper.readValue(response, Array<AnalyzedSnippet>::class.java)
@@ -53,21 +53,21 @@ class SnippetManagmentServiceSnippet {
         }
 
 
-        fun getFormattedSnippet(snippetId: UUID, token: String) : Snippet {
-            val response = putSnippetRepositories(token, "/snippets/format/snippet?uuid=$snippetId","")
+        fun getFormattedSnippet(snippetId: UUID, token: String, url: String) : Snippet {
+            val response = putSnippetRepositories(token, "/snippets/format/snippet?uuid=$snippetId","", url)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
-        fun getLintedSnippet(snippetId: UUID, token: String) : AnalyzeData {
-            val response = putSnippetRepositories(token, "/snippets/validate?uuid=$snippetId","")
+        fun getLintedSnippet(snippetId: UUID, token: String, url: String) : AnalyzeData {
+            val response = putSnippetRepositories(token, "/snippets/validate?uuid=$snippetId","", url)
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, AnalyzeData::class.java)
         }
 
-        fun getRunnedSnippet(snippetId: UUID, token: String) : Array<String> {
-            val response = putSnippetRepositories(token, "/snippets/run?uuid=$snippetId","")
+        fun getRunnedSnippet(snippetId: UUID, token: String, url: String) : Array<String> {
+            val response = putSnippetRepositories(token, "/snippets/run?uuid=$snippetId","", url)
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, Array<String>::class.java)
@@ -76,28 +76,28 @@ class SnippetManagmentServiceSnippet {
 
 
 
-        fun getAllFormatRules(token: String): FormatInfoRule {
-            val response =  getSnippetRepositories(token, "/user/rules/formatted")
+        fun getAllFormatRules(token: String, url: String): FormatInfoRule {
+            val response =  getSnippetRepositories(token, "/user/rules/formatted", url)
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, FormatInfoRule::class.java)
         }
 
-        fun getAllLintingRules(token: String): FormatInfoRule {
-            val response =  getSnippetRepositories(token, "/user/rules/linted")
+        fun getAllLintingRules(token: String, url: String): FormatInfoRule {
+            val response =  getSnippetRepositories(token, "/user/rules/linted", url)
             val objectMapper = ObjectMapper()
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             return objectMapper.readValue(response, FormatInfoRule::class.java)
         }
 
 
-        fun updateFormatRules(token: String, updateRules: UpdateRules): FormatInfoRule {
-            val response =  putSnippetRepositories(token, "/user/rules/formatted", updateRules)
+        fun updateFormatRules(token: String, updateRules: UpdateRules, url: String): FormatInfoRule {
+            val response =  putSnippetRepositories(token, "/user/rules/formatted", updateRules, url)
             return castRules(response)
         }
 
-        fun updateLintingRules(token: String, updateRules: UpdateRulesAndSnippets): FormatInfoRule {
-            val response =  putSnippetRepositories(token, "/user/rules/linted", updateRules)
+        fun updateLintingRules(token: String, updateRules: UpdateRulesAndSnippets, url: String): FormatInfoRule {
+            val response =  putSnippetRepositories(token, "/user/rules/linted", updateRules, url)
             return castRules(response)
         }
 

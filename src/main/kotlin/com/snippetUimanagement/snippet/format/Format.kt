@@ -6,11 +6,11 @@ import java.util.UUID
 
 class Format {
     companion object {
-        fun format(token: String, snippetId: UUID): Any? {
+        fun format(token: String, snippetId: UUID, url: String): Any? {
             try {
-                val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId)
+                val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId, url)
                 if (canUpdate) {
-                    return SnippetManagmentServiceSnippet.getFormattedSnippet(snippetId, token)
+                    return SnippetManagmentServiceSnippet.getFormattedSnippet(snippetId, token, url)
                 }
                 return null
             } catch (e: Throwable) {

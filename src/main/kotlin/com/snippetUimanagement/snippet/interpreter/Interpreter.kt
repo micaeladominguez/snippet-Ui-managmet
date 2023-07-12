@@ -6,11 +6,11 @@ import java.util.*
 
 class Interpreter {
     companion object {
-        fun interpreter(token:String,snippetId: UUID): Any?{
+        fun interpreter(token:String,snippetId: UUID, url: String): Any?{
             try {
-                val snippetRole = SnippetManageRepositories.canAccessASnippet(snippetId, token)
+                val snippetRole = SnippetManageRepositories.canAccessASnippet(snippetId, token, url)
                 if(snippetRole != null){
-                    return SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token).joinToString("\n")
+                    return SnippetManagmentServiceSnippet.getRunnedSnippet(snippetId, token, url).joinToString("\n")
                 }
                 return null
             }catch (e: Throwable){

@@ -7,11 +7,11 @@ import java.util.*
 
 class GetASnippet {
     companion object {
-        fun getASnippet(token: String, snippetUuid: UUID): Any?{
+        fun getASnippet(token: String, snippetUuid: UUID, url: String): Any?{
             try {
-                val snippetRole =  SnippetManageRepositories.canAccessASnippet(snippetUuid, token)
+                val snippetRole =  SnippetManageRepositories.canAccessASnippet(snippetUuid, token, url)
                 if(snippetRole != null){
-                    val snippetById = SnippetManagmentServiceSnippet.getSnippet(snippetUuid, token)
+                    val snippetById = SnippetManagmentServiceSnippet.getSnippet(snippetUuid, token, url)
                     return CompleteSnippet(snippetById.id, snippetById.code, snippetRole.role, snippetById.staticCodeCorrect, snippetById.linesErrors )
                 }
                 return null
