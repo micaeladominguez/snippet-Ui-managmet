@@ -20,7 +20,8 @@ class UpdateSnippet {
                         ""
                     else
                         interpretedSnippet.joinToString("\n")
-                    val testResults = SnippetTestingScripts.runTestsBySnippetUuid(token,snippetId, result)
+                    val testResults = SnippetTestingScripts.runTestsBySnippetUuid(token,snippetId, result, url)
+                    println(testResults)
                     SnippetUpdateWithTests(snippet, testResults.toList())
                 }else{
                     null
