@@ -113,7 +113,7 @@ class ApiController {
     }
 
     @PatchMapping("/update")
-    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : UpdateSnippetDTO, request: HttpServletRequest): ResponseEntity<out Any> {
+    fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : String, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = updateSnippetCode(snippetId, code, authorization, url)

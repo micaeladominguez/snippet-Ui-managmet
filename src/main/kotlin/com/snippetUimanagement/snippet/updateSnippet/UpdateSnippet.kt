@@ -10,7 +10,7 @@ import java.util.UUID
 
 class UpdateSnippet {
     companion object {
-        fun updateSnippetCode(snippetId: UUID, code: UpdateSnippetDTO, token:String, url: String) : Any?{
+        fun updateSnippetCode(snippetId: UUID, code: String, token:String, url: String) : Any?{
             try {
                 val canUpdate = SnippetManageRepositories.checkIfICanUpdate(token, snippetId, url)
                 return if(canUpdate){

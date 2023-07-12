@@ -21,7 +21,7 @@ class SnippetManagmentServiceSnippet {
             return objectMapper.readValue(response, Snippet::class.java)
         }
 
-        fun updateSnippet(snippetId: UUID, code: UpdateSnippetDTO, token: String, url: String): Snippet {
+        fun updateSnippet(snippetId: UUID, code: String, token: String, url: String): Snippet {
             val response = putSnippetRepositories(token, "/snippets/update/snippet?uuid=$snippetId",code, url)
             val objectMapper = ObjectMapper()
             return objectMapper.readValue(response, Snippet::class.java)
