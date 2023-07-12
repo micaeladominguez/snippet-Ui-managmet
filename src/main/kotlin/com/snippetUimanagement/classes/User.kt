@@ -8,3 +8,6 @@ data class User(
 ){
     constructor(): this("", "", "", "")
 }
+
+
+data class ErrorResponse(val message: String)

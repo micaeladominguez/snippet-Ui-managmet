@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.getFormaterRules
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class GetFormattedRules {
@@ -8,7 +9,7 @@ class GetFormattedRules {
             return try {
                 SnippetManagmentServiceSnippet.getAllFormatRules(token, url)
             }catch (e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

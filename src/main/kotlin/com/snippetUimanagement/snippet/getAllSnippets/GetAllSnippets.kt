@@ -1,6 +1,7 @@
 package com.snippetUimanagement.snippet.getAllSnippets
 
 import com.snippetUimanagement.classes.CompleteSnippet
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
@@ -16,7 +17,7 @@ class GetAllSnippets {
                     snippetRole?.let { CompleteSnippet(snippetById.id, snippetById.code, it.role, snippetById.staticCodeCorrect, snippetById.linesErrors) }
                 }
             }catch (e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

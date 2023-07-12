@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.defineLintingRules
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import com.snippetUimanagement.repos.dto.UpdateRules
@@ -14,7 +15,7 @@ class DefineLintingRules {
                 val rules = UpdateRulesAndSnippets(updatedRules.rules, snippetIds)
                 SnippetManagmentServiceSnippet.updateLintingRules(token, rules, url)
             }catch (e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

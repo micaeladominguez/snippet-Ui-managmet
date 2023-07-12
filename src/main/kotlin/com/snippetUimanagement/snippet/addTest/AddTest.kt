@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.addTest
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetTestingScripts
 import com.snippetUimanagement.repos.dto.CreateTestCaseDto
 import java.util.UUID
@@ -10,7 +11,7 @@ class AddTest {
             return try {
                 SnippetTestingScripts.addTest(token, snippetId, createTestDTO, url)
             }catch(e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

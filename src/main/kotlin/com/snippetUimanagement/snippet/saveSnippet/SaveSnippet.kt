@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.saveSnippet
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import com.snippetUimanagement.repos.dto.SnippetCreateDTO
@@ -12,7 +13,7 @@ class SaveSnippet {
                 SnippetManageRepositories.saveSnippetByRole(snippet.id, token, url)
                 snippet
             }catch(e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

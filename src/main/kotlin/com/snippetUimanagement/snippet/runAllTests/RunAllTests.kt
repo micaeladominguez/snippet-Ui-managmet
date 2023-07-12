@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.runAllTests
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetTestingScripts
 import java.util.UUID
 
@@ -9,7 +10,7 @@ class RunAllTests {
             return try {
                  SnippetTestingScripts.runTestsBySnippetUuid(token, snippetId, url).toList()
             }catch (e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

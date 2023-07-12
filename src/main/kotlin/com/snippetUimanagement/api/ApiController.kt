@@ -1,5 +1,6 @@
 package com.snippetUimanagement.api
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.snippet.addTest.AddTest.Companion.addTest
 import com.snippetUimanagement.repos.dto.CreateTestCaseDto
 import com.snippetUimanagement.snippet.saveSnippet.SaveSnippet.Companion.saveSnippet
@@ -23,7 +24,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.ResponseEntity
-import java.net.URI
 import java.util.*
 
 @RestController
@@ -32,17 +32,17 @@ class ApiController {
 
     private fun cutUrlBeforeBackend(url: String): String {
         val validDomains = listOf("https://snippetsps-dev.ddns.net/", "https://snippetsps.ddns.net/")
-        val matchingDomain = validDomains.find { url.startsWith(it) }
+        val matchingDomain = validDomains.find { url.contains(it) }
         return matchingDomain ?: "https://snippetsps-dev.ddns.net/"
     }
     @PostMapping("/snippets/create")
-    fun postASnippet(@RequestHeader authorization : String, @RequestBody body : SnippetCreateDTO, request: HttpServletRequest): ResponseEntity<String> {
+    fun postASnippet(@RequestHeader authorization : String, @RequestBody body : SnippetCreateDTO, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
-            saveSnippet(body, authorization, url)
-            ResponseEntity("Created ", HttpStatus.CREATED)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+            val snippet = saveSnippet(body, authorization, url)
+            return ResponseEntity(snippet, HttpStatus.CREATED)
+        }catch(e: Exception){
+            return ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -53,8 +53,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = addTest(authorization, snippetId, body, url)
             ResponseEntity(response, HttpStatus.CREATED)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -65,8 +65,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -77,8 +77,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -89,8 +89,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getAllSnippets(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -102,8 +102,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = shareASnippet(authorization, body, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -114,8 +114,8 @@ class ApiController {
             val response = updateSnippetCode(snippetId, code, authorization, url)
                 ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -125,8 +125,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = format(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -136,8 +136,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = interpreter(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -147,8 +147,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = lint(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -158,8 +158,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getASnippet(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -169,8 +169,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getFormattedRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -180,8 +180,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getLintingRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -191,8 +191,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = formatRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -202,8 +202,8 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = lintingRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Error){
-            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }catch(e: Exception){
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 

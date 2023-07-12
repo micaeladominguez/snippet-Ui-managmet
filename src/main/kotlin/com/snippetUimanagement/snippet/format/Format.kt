@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.format
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import java.util.UUID
@@ -14,7 +15,7 @@ class Format {
                 }
                 return null
             } catch (e: Throwable) {
-                return e
+                return  ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

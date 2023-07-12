@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.defineFormattedRules
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import com.snippetUimanagement.repos.dto.UpdateRules
 
@@ -9,7 +10,7 @@ class DefineFormattedRule {
             return try {
                 SnippetManagmentServiceSnippet.updateFormatRules(token, updatedRules, url)
             }catch(e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

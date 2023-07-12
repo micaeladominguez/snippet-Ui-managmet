@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.updateSnippet
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.classes.SnippetUpdateWithTests
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
@@ -24,7 +25,7 @@ class UpdateSnippet {
                     null
                 }
             }catch (e: Throwable){
-                return e
+                return  ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.shareASnippet
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.dto.SnippetRoleUpdateDTO
 
@@ -9,7 +10,7 @@ class ShareASnippet {
             return try {
                 SnippetManageRepositories.givePermissions(snippetRoleUpdateDTO, token, url)
             }catch (e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }

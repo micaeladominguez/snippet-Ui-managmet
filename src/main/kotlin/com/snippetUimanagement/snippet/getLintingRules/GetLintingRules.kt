@@ -1,5 +1,6 @@
 package com.snippetUimanagement.snippet.getLintingRules
 
+import com.snippetUimanagement.classes.ErrorResponse
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 
 class GetLintingRules {
@@ -9,7 +10,7 @@ class GetLintingRules {
                 SnippetManagmentServiceSnippet.getAllLintingRules(userUuid, url)
 
             }catch(e: Throwable){
-                e
+                ErrorResponse(e.message ?: "An error occurred")
             }
         }
     }
