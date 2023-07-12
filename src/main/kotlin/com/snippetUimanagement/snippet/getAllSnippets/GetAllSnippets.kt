@@ -14,7 +14,7 @@ class GetAllSnippets {
                 val snippetsByIds = SnippetManagmentServiceSnippet.getAllThisSnippets(token,snippetIds, url)
                 snippetsByIds.mapNotNull { snippetById ->
                     val snippetRole = snippetsWithRole.firstOrNull { it.id == snippetById.id }
-                    snippetRole?.let { CompleteSnippet(snippetById.id, snippetById.code, it.role, snippetById.staticCodeCorrect, snippetById.linesErrors) }
+                    snippetRole?.let { CompleteSnippet(snippetById.id, snippetById.code, snippetById.name,  it.role, snippetById.staticCodeCorrect, snippetById.linesErrors) }
                 }
             }catch (e: Throwable){
                 ErrorResponse(e.message ?: "An error occurred")
