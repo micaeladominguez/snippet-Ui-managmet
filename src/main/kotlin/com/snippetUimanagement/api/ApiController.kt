@@ -48,10 +48,11 @@ class ApiController {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val snippet = saveSnippet(body, authorization, url)
-            ResponseEntity(snippet, HttpStatus.CREATED)
+            return ResponseEntity(snippet, HttpStatus.CREATED)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            return ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
+
     }
 
     @PostMapping("/test/create")
@@ -61,7 +62,7 @@ class ApiController {
             val response = addTest(authorization, snippetId, body, url)
             ResponseEntity(response, HttpStatus.CREATED)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -73,7 +74,7 @@ class ApiController {
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -85,7 +86,7 @@ class ApiController {
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -97,7 +98,7 @@ class ApiController {
             val response = getAllSnippets(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
 
     }
@@ -110,7 +111,7 @@ class ApiController {
             val response = shareASnippet(authorization, body, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -122,7 +123,7 @@ class ApiController {
                 ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -133,7 +134,7 @@ class ApiController {
             val response = format(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -144,7 +145,7 @@ class ApiController {
             val response = interpreter(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -155,7 +156,7 @@ class ApiController {
             val response = lint(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -166,7 +167,7 @@ class ApiController {
             val response = getASnippet(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -177,7 +178,7 @@ class ApiController {
             val response = getFormattedRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -188,7 +189,7 @@ class ApiController {
             val response = getLintingRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -199,7 +200,7 @@ class ApiController {
             val response = formatRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -210,7 +211,7 @@ class ApiController {
             val response = lintingRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
-            ResponseEntity(ErrorResponse(e.message ), HttpStatus.BAD_REQUEST)
+            ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
         }
     }
 

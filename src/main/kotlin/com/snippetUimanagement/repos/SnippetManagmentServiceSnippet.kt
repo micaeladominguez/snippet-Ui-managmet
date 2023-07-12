@@ -35,7 +35,7 @@ class SnippetManagmentServiceSnippet {
             val snippetRole: Array<AnalyzedSnippet> = mapper.readValue(response, Array<AnalyzedSnippet>::class.java)
             val snippetById = mutableListOf<SnippetById>()
             for(snippet in snippetRole){
-                snippetById.add(SnippetById(snippet.snippet.code, snippet.snippet.name, snippet.snippet.id, snippet.data.isValid, snippet.data.linesErrors))
+                snippetById.add(SnippetById(snippet.snippet.code, snippet.snippet.id, snippet.data.isValid, snippet.data.linesErrors))
             }
             return snippetById
         }
@@ -47,7 +47,7 @@ class SnippetManagmentServiceSnippet {
             val snippetRole: Array<AnalyzedSnippet> = mapper.readValue(response, Array<AnalyzedSnippet>::class.java)
             val snippetById = mutableListOf<SnippetById>()
             for(snippet in snippetRole){
-                snippetById.add(SnippetById(snippet.snippet.code, snippet.snippet.name,snippet.snippet.id, snippet.data.isValid, snippet.data.linesErrors))
+                snippetById.add(SnippetById(snippet.snippet.code, snippet.snippet.id, snippet.data.isValid, snippet.data.linesErrors))
             }
             return snippetById[0]
         }
