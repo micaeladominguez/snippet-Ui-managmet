@@ -49,7 +49,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val snippet = saveSnippet(body, authorization, url)
             ResponseEntity(snippet, HttpStatus.CREATED)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -60,7 +60,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = addTest(authorization, snippetId, body, url)
             ResponseEntity(response, HttpStatus.CREATED)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
 
@@ -72,7 +72,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
 
@@ -84,7 +84,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = runAllTests(authorization, snippetId, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
 
@@ -96,7 +96,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getAllSnippets(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
 
@@ -109,7 +109,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = shareASnippet(authorization, body, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -121,7 +121,7 @@ class ApiController {
             val response = updateSnippetCode(snippetId, code, authorization, url)
                 ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -132,7 +132,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = format(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -143,7 +143,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = interpreter(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -154,7 +154,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = lint(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -165,7 +165,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getASnippet(authorization,snippetId, url) ?: return ResponseEntity("No permissions", HttpStatus.BAD_REQUEST)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -176,7 +176,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getFormattedRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -187,7 +187,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = getLintingRules(authorization, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -198,7 +198,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = formatRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
@@ -209,7 +209,7 @@ class ApiController {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
             val response = lintingRules(authorization, rules, url)
             ResponseEntity(response, HttpStatus.OK)
-        }catch(e: Throwable){
+        }catch(e: ErrorResponse){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)
         }
     }
