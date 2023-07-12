@@ -1,0 +1,10 @@
+package com.snippetUimanagement.classes
+
+data class User(
+    val email : String,
+    val name: String,
+    val nickName: String,
+    val userId: String
+){
+    constructor(): this("", "", "", "")
+}

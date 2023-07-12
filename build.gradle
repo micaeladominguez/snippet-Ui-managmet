@@ -24,6 +24,7 @@ dependencies {
 	implementation 'com.konghq:unirest-java:3.11.11'
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5' // Replace with the latest version
 }
 
 tasks.withType(KotlinCompile) {

@@ -40,10 +40,10 @@ class ApiController {
     }
 
     @PostMapping("/test/create")
-    fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto): ResponseEntity<String> {
+    fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto): ResponseEntity<Any> {
         return try {
             val response = addTest(authorization, snippetId, body)
-            ResponseEntity("Created $response", HttpStatus.CREATED)
+            ResponseEntity(response, HttpStatus.CREATED)
         }catch(e: Error){
             ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
         }
@@ -52,6 +52,17 @@ class ApiController {
 
     @GetMapping("/snippets/runAllTests")
     fun getAllSnippetsGet(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
+        return try {
+            val response = runAllTests(authorization, snippetId)
+            ResponseEntity(response, HttpStatus.OK)
+        }catch(e: Error){
+            ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+        }
+
+    }
+
+    @PutMapping("/test/update")
+    fun updateTestPut(@RequestHeader authorization : String, @RequestParam snippetId: UUID): ResponseEntity<out Any> {
         return try {
             val response = runAllTests(authorization, snippetId)
             ResponseEntity(response, HttpStatus.OK)

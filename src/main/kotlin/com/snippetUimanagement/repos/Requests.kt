@@ -1,7 +1,5 @@
 package com.snippetUimanagement.repos
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -11,8 +9,15 @@ import org.springframework.web.client.RestTemplate
 class Requests {
     companion object {
         private const val manageRepository = "https://snippetsps.ddns.net/services/manage-repositories"
+        //private const val manageRepository = "http://localhost:8082/"
+
         private const val snippetRepository = "https://snippetsps.ddns.net/services/management-service"
+        //private const val snippetRepository = "http://localhost:8083/"
+
         private const val testRepository = "https://snippetsps.ddns.net/services/testing-scripts"
+
+        //private const val testRepository = "http://localhost:8081/"
+
 
 
         fun getManageRepositories(token : String, extraUrl: String) : String?{
@@ -23,9 +28,6 @@ class Requests {
             return getMethod(token, extraUrl, snippetRepository)
         }
 
-        fun getTestRepositories(token : String, extraUrl: String) {
-            getMethod(token, extraUrl, testRepository)
-        }
 
         fun postManageRepositories(token : String, extraUrl: String, requestBody: Any): String? {
             return postMethod(token, extraUrl, manageRepository, requestBody)
@@ -36,9 +38,7 @@ class Requests {
         }
 
         fun postTestRepositories(token : String, extraUrl: String,  requestBody: Any): String? {
-            val objectMapper = ObjectMapper().registerModule(KotlinModule())
-            val requestBodyJson = objectMapper.writeValueAsString(requestBody)
-            return postMethod(token, extraUrl, testRepository, requestBodyJson)
+            return postMethod(token, extraUrl, testRepository, requestBody)
         }
 
         fun putManageRepositories(token : String, extraUrl: String, requestBody: Any) : String?{
@@ -49,9 +49,6 @@ class Requests {
             return putMethod(token, extraUrl, snippetRepository, requestBody)
         }
 
-        fun putTestRepositories(token : String, extraUrl: String,  requestBody: Any) {
-            putMethod(token, extraUrl, testRepository, requestBody)
-        }
 
         private fun getMethod(token : String, extraUrl: String, uri: String): String?{
             val headers = HttpHeaders()

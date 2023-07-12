@@ -9,7 +9,6 @@ data class TestCase(
 
     var snippetId: UUID,
 
-    var input: String,
 
     var output: String,
 
@@ -19,5 +18,5 @@ data class TestCase(
 
     var deletedAt: LocalDateTime?,
 ){
-    constructor(): this(UUID.randomUUID(), UUID.randomUUID(), "", "", LocalDateTime.MAX,null,null)
+    constructor(): this(UUID.randomUUID(), UUID.randomUUID(), "",  LocalDateTime.MAX,null,null)
 }

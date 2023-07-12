@@ -7,13 +7,18 @@ import java.util.*
 
 class GetASnippet {
     companion object {
-        fun getASnippet(token: String, snippetUuid: UUID): CompleteSnippet?{
-            val snippetRole =  SnippetManageRepositories.canAccessASnippet(snippetUuid, token)
-            if(snippetRole != null){
-                val snippetById = SnippetManagmentServiceSnippet.getSnippet(snippetUuid, token)
-                return CompleteSnippet(snippetById.id, snippetById.code, snippetRole.role, snippetById.staticCodeCorrect, snippetById.linesErrors )
+        fun getASnippet(token: String, snippetUuid: UUID): Any?{
+            try {
+                val snippetRole =  SnippetManageRepositories.canAccessASnippet(snippetUuid, token)
+                if(snippetRole != null){
+                    val snippetById = SnippetManagmentServiceSnippet.getSnippet(snippetUuid, token)
+                    return CompleteSnippet(snippetById.id, snippetById.code, snippetRole.role, snippetById.staticCodeCorrect, snippetById.linesErrors )
+                }
+                return null
+            }catch (e: Throwable){
+                return e
             }
-            return null
+
         }
     }
 

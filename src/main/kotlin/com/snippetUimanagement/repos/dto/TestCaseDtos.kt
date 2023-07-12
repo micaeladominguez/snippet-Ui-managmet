@@ -1,10 +1,8 @@
 package com.snippetUimanagement.repos.dto
 
 import java.util.UUID
-import kotlin.contracts.contract
 
 data class CreateTestCaseDto(
-    val input: String,
     val output: String
 )
 
