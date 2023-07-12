@@ -5,7 +5,6 @@ import com.snippetUimanagement.classes.SnippetUpdateWithTests
 import com.snippetUimanagement.repos.SnippetManageRepositories
 import com.snippetUimanagement.repos.SnippetManagmentServiceSnippet
 import com.snippetUimanagement.repos.SnippetTestingScripts
-import com.snippetUimanagement.repos.dto.UpdateSnippetDTO
 import java.util.UUID
 
 class UpdateSnippet {

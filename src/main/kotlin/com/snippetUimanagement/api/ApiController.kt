@@ -217,7 +217,7 @@ class ApiController {
     fun getAuth(request: HttpServletRequest): ResponseEntity<out Any> {
         val tokenResponse: HttpResponse<JsonNode> = Unirest.post("https://dev-c4l43o2ndcdikqar.us.auth0.com/oauth/token")
             .header("Content-Type", "application/json")
-            .body("{\"client_id\":\"${dotenv["AUTH_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
+            .body("{\"client_id\":\"${dotenv["AUTH0_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH0_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
             .asJson()
         val accessToken = tokenResponse.body.getObject().getString("access_token")
         val apiResponse: HttpResponse<JsonNode>? =  Unirest.get("https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/users")
