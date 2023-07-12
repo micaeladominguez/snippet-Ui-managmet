@@ -53,7 +53,7 @@ class ApiController {
         }
     }
 
-    @PostMapping("/test/create")
+    @PatchMapping("/test/create")
     fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto, request: HttpServletRequest): ResponseEntity<Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -77,7 +77,7 @@ class ApiController {
 
     }
 
-    @PutMapping("/test/update")
+    @PatchMapping("/test/update")
     fun updateTestPut(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -101,8 +101,7 @@ class ApiController {
 
     }
 
-
-    @PutMapping("/share")
+    @PostMapping("/share")
     fun shareASnippetPut(@RequestHeader authorization : String,  @RequestBody body : SnippetRoleUpdateDTO, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -113,7 +112,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     fun updateASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, @RequestBody code : UpdateSnippetDTO, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -125,7 +124,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/format")
+    @PatchMapping("/format")
     fun formatASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -136,7 +135,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/interpreter")
+    @PatchMapping("/interpreter")
     fun runASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -147,7 +146,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/lint")
+    @PatchMapping("/lint")
     fun lintASnippet(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -191,7 +190,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/rules/formatting")
+    @PatchMapping("/rules/formatting")
     fun updateFormattedRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -202,7 +201,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/rules/linting")
+    @PatchMapping("/rules/linting")
     fun updateLintingRulesGet(@RequestHeader authorization : String, @RequestBody rules: UpdateRules, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
