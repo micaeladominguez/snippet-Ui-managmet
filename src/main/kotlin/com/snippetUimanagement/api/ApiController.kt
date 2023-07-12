@@ -1,7 +1,6 @@
 package com.snippetUimanagement.api
 
 import com.snippetUimanagement.classes.ErrorResponse
-import com.snippetUimanagement.classes.User
 import com.snippetUimanagement.snippet.addTest.AddTest.Companion.addTest
 import com.snippetUimanagement.repos.dto.CreateTestCaseDto
 import com.snippetUimanagement.snippet.saveSnippet.SaveSnippet.Companion.saveSnippet
@@ -21,18 +20,11 @@ import com.snippetUimanagement.snippet.linter.Linter.Companion.lint
 import com.snippetUimanagement.snippet.runAllTests.RunAllTests.Companion.runAllTests
 import com.snippetUimanagement.snippet.shareASnippet.ShareASnippet.Companion.shareASnippet
 import com.snippetUimanagement.snippet.updateSnippet.UpdateSnippet.Companion.updateSnippetCode
-import io.github.cdimascio.dotenv.Dotenv
-import io.github.cdimascio.dotenv.dotenv
 import jakarta.servlet.http.HttpServletRequest
-import kong.unirest.HttpResponse
-import kong.unirest.JsonNode
-import kong.unirest.Unirest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.ResponseEntity
 import java.util.*
-
-val dotenv: Dotenv = dotenv()
 
 @RestController
 @RequestMapping("/api")
@@ -212,33 +204,6 @@ class ApiController {
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: ErrorResponse){
             ResponseEntity(ErrorResponse(e.message ?: "An error occurred"), HttpStatus.BAD_REQUEST)
-        }
-    }
-
-
-    @GetMapping("/auth")
-    fun getAuth(request: HttpServletRequest): ResponseEntity<out Any> {
-        val tokenResponse: HttpResponse<JsonNode> = Unirest.post("https://dev-c4l43o2ndcdikqar.us.auth0.com/oauth/token")
-            .header("Content-Type", "application/json")
-            .body("{\"client_id\":\"${dotenv["AUTH_CLIENT_ID"]}\",\"client_secret\":\"${dotenv["AUTH_CLIENT_SECRET"]}\",\"audience\":\"https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
-            .asJson()
-        val accessToken = tokenResponse.body.getObject().getString("access_token")
-        val apiResponse: HttpResponse<JsonNode>? =  Unirest.get("https://dev-c4l43o2ndcdikqar.us.auth0.com/api/v2/users")
-            .header("Authorization", "Bearer $accessToken").asJson()
-        return if(apiResponse !== null){
-            val apiResponseObject = apiResponse.body.array
-            val users = ArrayList<User>()
-            for (i in 0 until apiResponseObject.length()) {
-                val user = apiResponseObject.getJSONObject(i)
-                val email = user.get("email").toString()
-                val name = user.get("name").toString()
-                val nickName = user.get("nickname").toString()
-                val userId = user.get("user_id").toString()
-                users.add(User(email, name, nickName, userId))
-            }
-            return ResponseEntity(users, HttpStatus.OK)
-        }else{
-            ResponseEntity( "apI RESPONSE NULL", HttpStatus.OK)
         }
     }
 
