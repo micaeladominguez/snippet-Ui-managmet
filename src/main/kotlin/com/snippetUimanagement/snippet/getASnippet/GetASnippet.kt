@@ -13,7 +13,7 @@ class GetASnippet {
                 val snippetRole =  SnippetManageRepositories.canAccessASnippet(snippetUuid, token, url)
                 if(snippetRole != null){
                     val snippetById = SnippetManagmentServiceSnippet.getSnippet(snippetUuid, token, url)
-                    return CompleteSnippet(snippetById.id, snippetById.code, snippetRole.role, snippetById.staticCodeCorrect, snippetById.linesErrors )
+                    return CompleteSnippet(snippetById.id, snippetById.code, snippetById.name,snippetRole.role, snippetById.staticCodeCorrect, snippetById.linesErrors )
                 }
                 return null
             }catch (e: Throwable){
