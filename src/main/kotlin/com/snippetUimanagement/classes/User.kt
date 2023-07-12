@@ -10,4 +10,4 @@ data class User(
 }
 
 
-data class ErrorResponse(override val message: String) : Throwable()
+data class ErrorResponse(val message: String)
