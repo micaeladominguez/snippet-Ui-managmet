@@ -9,6 +9,7 @@ import com.snippetUimanagement.snippet.getAllSnippets.GetAllSnippets.Companion.g
 
 import com.snippetUimanagement.snippet.defineFormattedRules.DefineFormattedRule.Companion.formatRules
 import com.snippetUimanagement.snippet.defineLintingRules.DefineLintingRules.Companion.lintingRules
+import com.snippetUimanagement.snippet.editTest.EditTest.Companion.editTest
 import com.snippetUimanagement.snippet.format.Format.Companion.format
 import com.snippetUimanagement.snippet.getASnippet.GetASnippet.Companion.getASnippet
 import com.snippetUimanagement.snippet.getFormaterRules.GetFormattedRules.Companion.getFormattedRules
@@ -52,7 +53,7 @@ class ApiController {
         }
     }
 
-    @PutMapping("/test/create")
+    @PostMapping("/test/create")
     fun postATest(@RequestHeader authorization : String,@RequestParam snippetId: UUID,  @RequestBody body : CreateTestCaseDto, request: HttpServletRequest): ResponseEntity<Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
@@ -77,10 +78,10 @@ class ApiController {
     }
 
     @PatchMapping("/test/update")
-    fun updateTestPut(@RequestHeader authorization : String, @RequestParam snippetId: UUID, request: HttpServletRequest): ResponseEntity<out Any> {
+    fun updateTestPut(@RequestHeader authorization : String, @RequestParam testId: UUID,@RequestBody body : CreateTestCaseDto, request: HttpServletRequest): ResponseEntity<out Any> {
         return try {
             val url = cutUrlBeforeBackend(request.requestURL.toString())
-            val response = runAllTests(authorization, snippetId, url)
+            val response = editTest(authorization,testId,body,url)
             ResponseEntity(response, HttpStatus.OK)
         }catch(e: Throwable){
             ResponseEntity(e.message?.let { ErrorResponse(it) }, HttpStatus.BAD_REQUEST)

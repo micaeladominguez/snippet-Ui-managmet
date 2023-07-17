@@ -41,6 +41,10 @@ class Requests {
             return postMethod(token, extraUrl, testRepository, requestBody, url)
         }
 
+        fun patchTestRepositories(token : String, extraUrl: String,  requestBody: Any, url: String): String? {
+            return putMethod(token, extraUrl, testRepository, requestBody, url)
+        }
+
         fun putManageRepositories(token : String, extraUrl: String, requestBody: Any, url: String) : String?{
             return putMethod(token, extraUrl, manageRepository, requestBody, url)
         }

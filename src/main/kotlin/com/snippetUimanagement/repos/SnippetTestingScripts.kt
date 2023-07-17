@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.snippetUimanagement.classes.TestCase
+import com.snippetUimanagement.repos.Requests.Companion.patchTestRepositories
 import com.snippetUimanagement.repos.Requests.Companion.postTestRepositories
 import com.snippetUimanagement.repos.dto.CreateTestCaseDto
 import com.snippetUimanagement.repos.dto.TestResultDto
@@ -30,6 +31,14 @@ class SnippetTestingScripts {
 
         fun addTest(token: String, snippetUuid: UUID, createTestDTO: CreateTestCaseDto, url: String): TestCase{
             val response = postTestRepositories(token, "/testing?snippetId=$snippetUuid", createTestDTO, url)
+            val objectMapper = ObjectMapper()
+            objectMapper.registerModule(JavaTimeModule())
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            return objectMapper.readValue(response, TestCase ::class.java)
+        }
+
+        fun editTest(token: String, testId: UUID, createTestDTO: CreateTestCaseDto, url: String): TestCase{
+            val response = patchTestRepositories(token, "/testing/$testId", createTestDTO, url)
             val objectMapper = ObjectMapper()
             objectMapper.registerModule(JavaTimeModule())
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
